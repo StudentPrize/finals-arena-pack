@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>finals-arena-pack — The Finals Free Pack</title>
+<style>
+  :root{
+    --bg-0:#070a16;
+    --bg-1:#0b1024;
+    --bg-2:#111733;
+    --ink:#eef1ff;
+    --muted:#9aa4c7;
+    --accent:#7c5cff;
+    --accent-2:#22d3ee;
+    --accent-3:#ff4d9d;
+    --line:rgba(255,255,255,.09);
+    --card:rgba(255,255,255,.035);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,"Inter",Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 620px at 78% -12%, rgba(124,92,255,.34), transparent 62%),
+      radial-gradient(900px 560px at 8% 4%, rgba(34,211,238,.17), transparent 60%),
+      radial-gradient(900px 700px at 50% 108%, rgba(255,77,157,.14), transparent 62%),
+      linear-gradient(180deg,#070a16 0%,#0b1024 38%,#101634 72%,#0a0e1f 100%);
+    background-attachment:fixed;
+    min-height:100vh;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{width:min(1140px,92vw);margin:0 auto}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;top:0;z-index:60;
+    backdrop-filter:blur(16px) saturate(160%);
+    -webkit-backdrop-filter:blur(16px) saturate(160%);
+    background:linear-gradient(180deg,rgba(11,16,36,.82),rgba(11,16,36,.55));
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:18px;padding:14px 0;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;font-size:1.02rem}
+  .brand .mark{
+    width:30px;height:30px;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow:0 6px 20px rgba(124,92,255,.45);
+    font-size:.95rem;
+  }
+  .brand span.b{background:linear-gradient(90deg,#fff,#b9a6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .nav-links{display:flex;align-items:center;gap:26px;font-size:.92rem;color:var(--muted)}
+  .nav-links a{transition:color .18s ease}
+  .nav-links a:hover{color:#fff}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    padding:11px 20px;border-radius:12px;font-weight:700;font-size:.92rem;
+    border:1px solid transparent;cursor:pointer;transition:transform .16s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent),#5f8bff 55%,var(--accent-2));
+    color:#060916;
+    box-shadow:0 10px 28px rgba(124,92,255,.42);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(124,92,255,.55)}
+  .btn-ghost{
+    background:rgba(255,255,255,.04);color:var(--ink);
+    border-color:var(--line);
+  }
+  .btn-ghost:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.08)}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:84px 0 56px;text-align:center;position:relative}
+  .pill{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:7px 16px;border-radius:999px;font-size:.8rem;font-weight:600;
+    color:#d9d4ff;letter-spacing:.3px;
+    background:rgba(124,92,255,.13);
+    border:1px solid rgba(124,92,255,.4);
+    box-shadow:0 0 26px rgba(124,92,255,.22) inset;
+  }
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 10px var(--accent-2)}
+  h1{
+    margin:24px auto 0;max-width:900px;
+    font-size:clamp(2.1rem,5.6vw,4rem);
+    line-height:1.08;letter-spacing:-1.4px;font-weight:800;
+    background:linear-gradient(96deg,#ffffff 0%,#c3b4ff 32%,#7c5cff 58%,#22d3ee 90%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 12px 34px rgba(124,92,255,.28));
+  }
+  .hero p.lede{
+    margin:22px auto 0;max-width:640px;color:var(--muted);font-size:1.04rem;
+  }
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .hero-cta .btn{padding:14px 28px;font-size:.98rem;border-radius:14px}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    margin:52px auto 0;max-width:940px;
+  }
+  .stat{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:16px 12px;text-align:center;
+    backdrop-filter:blur(8px);
+  }
+  .stat b{display:block;font-size:1.12rem;font-weight:800;letter-spacing:-.3px}
+  .stat small{color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.9px}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:74px 0}
+  .sec-head{text-align:center;max-width:660px;margin:0 auto 44px}
+  .sec-head .kicker{
+    font-size:.76rem;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;
+    color:var(--accent-2);
+  }
+  .sec-head h2{
+    margin-top:12px;font-size:clamp(1.6rem,3.4vw,2.4rem);
+    letter-spacing:-.9px;font-weight:800;
+  }
+  .sec-head p{margin-top:12px;color:var(--muted);font-size:.98rem}
+
+  /* ---------- FEATURES ---------- */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{
+    position:relative;overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 22px 24px;
+    transition:transform .22s ease,box-shadow .28s ease,border-color .22s ease;
+  }
+  .card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    opacity:.9;
+  }
+  .card:nth-child(2)::before{background:linear-gradient(90deg,#22d3ee,#5f8bff)}
+  .card:nth-child(3)::before{background:linear-gradient(90deg,#ff4d9d,#7c5cff)}
+  .card:nth-child(4)::before{background:linear-gradient(90deg,#7c5cff,#22d3ee)}
+  .card:nth-child(5)::before{background:linear-gradient(90deg,#5f8bff,#ff4d9d)}
+  .card:nth-child(6)::before{background:linear-gradient(90deg,#22d3ee,#7c5cff)}
+  .card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(124,92,255,.5);
+    box-shadow:0 22px 46px rgba(8,10,26,.72),0 0 0 1px rgba(124,92,255,.18);
+  }
+  .card .ico{
+    width:46px;height:46px;border-radius:12px;display:grid;place-items:center;
+    font-size:1.35rem;margin-bottom:16px;
+    background:rgba(124,92,255,.13);border:1px solid rgba(124,92,255,.28);
+  }
+  .card h3{font-size:1.03rem;font-weight:750;letter-spacing:-.2px;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.9rem}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{position:relative;max-width:780px;margin:0 auto;padding-left:8px}
+  .steps::before{
+    content:"";position:absolute;left:29px;top:16px;bottom:16px;width:2px;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2),rgba(34,211,238,0));
+    border-radius:2px;
+  }
+  .step{position:relative;display:flex;gap:22px;padding:0 0 34px}
+  .step:last-child{padding-bottom:0}
+  .step .num{
+    flex:0 0 44px;width:44px;height:44px;border-radius:50%;
+    display:grid;place-items:center;font-weight:800;font-size:1rem;
+    background:linear-gradient(135deg,#141a3a,#0b1024);
+    border:1px solid rgba(124,92,255,.55);
+    color:#cfc4ff;box-shadow:0 0 0 6px rgba(11,16,36,.9),0 0 22px rgba(124,92,255,.35);
+    z-index:1;
+  }
+  .step .body{padding-top:6px}
+  .step h3{font-size:1.04rem;font-weight:750;letter-spacing:-.2px;margin-bottom:6px}
+  .step p{color:var(--muted);font-size:.92rem;max-width:560px}
+
+  /* ---------- FAQ ---------- */
+  .faq{max-width:800px;margin:0 auto;display:grid;gap:12px}
+  details{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:0 20px;transition:border-color .2s ease,background .2s ease;
+  }
+  details[open]{border-color:rgba(124,92,255,.45);background:rgba(124,92,255,.055)}
+  details:hover{border-color:rgba(255,255,255,.2)}
+  summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding:18px 0;font-weight:650;font-size:.97rem;
+  }
+  summary::-webkit-details-marker{display:none}
+  .plus{
+    flex:0 0 24px;width:24px;height:24px;position:relative;
+    transition:transform .25s ease;opacity:.85;
+  }
+  .plus::before,.plus::after{
+    content:"";position:absolute;left:50%;top:50%;background:#b9a6ff;border-radius:2px;
+    transform:translate(-50%,-50%);
+  }
+  .plus::before{width:14px;height:2px}
+  .plus::after{width:2px;height:14px}
+  details[open] .plus{transform:rotate(45deg)}
+  details[open] .plus::before,details[open] .plus::after{background:var(--accent-2)}
+  details p{padding:0 0 20px;color:var(--muted);font-size:.92rem;max-width:660px}
+
+  /* ---------- CTA BANNER ---------- */
+  .cta-banner{
+    position:relative;overflow:hidden;text-align:center;
+    border:1px solid rgba(124,92,255,.35);border-radius:26px;
+    padding:64px 28px;
+    background:linear-gradient(150deg,rgba(124,92,255,.16),rgba(11,16,36,.9) 46%,rgba(34,211,238,.13));
+    box-shadow:0 30px 70px rgba(6,8,20,.7);
+  }
+  .cta-banner::before{
+    content:"";position:absolute;left:50%;top:-30%;width:620px;height:620px;
+    transform:translateX(-50%);
+    background:radial-gradient(circle,rgba(124,92,255,.42),transparent 62%);
+    pointer-events:none;
+  }
+  .cta-banner > *{position:relative}
+  .cta-banner h2{
+    font-size:clamp(1.55rem,3.6vw,2.35rem);font-weight:800;letter-spacing:-.9px;
+    background:linear-gradient(92deg,#fff,#c3b4ff 46%,#22d3ee);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .cta-banner p{color:var(--muted);margin:14px auto 28px;max-width:520px;font-size:.98rem}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);padding:30px 0 40px;margin-top:70px;
+  }
+  .foot{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    color:var(--muted);font-size:.86rem;
+  }
+  .foot a{color:#c3b4ff;transition:color .18s ease}
+  .foot a:hover{color:#fff}
+  .foot .links{display:flex;gap:20px}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .stats{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:640px){
+    .nav-links{display:none}
+    .nav-inner{padding:12px 0}
+    .hero{padding:60px 0 40px}
+    .grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr 1fr;gap:10px;margin-top:40px}
+    .hero-cta .btn{width:100%}
+    .steps::before{left:21px}
+    .step .num{flex:0 0 42px;width:42px;height:42px;font-size:.92rem}
+    .foot{flex-direction:column;text-align:center}
+    section{padding:56px 0}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <span class="mark">🎯</span>
+      <span class="b">finals-arena-pack</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-primary" href="https://gitscore.cc" target="_blank" rel="noopener">Download</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="pill"><span class="dot"></span> The Finals Free Pack · Windows</span>
+      <h1>The Finals Free Pack — aimbot, ESP &amp; radar for ranked climbs</h1>
+      <p class="lede">
+        finals-arena-pack bundles everything you need to dominate The Finals: an aimbot with
+        smooth target locking, ESP wallhack, a live radar overlay, a no-recoil script, and a
+        HWID spoofer to keep your ranked grind uninterrupted.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://gitscore.cc" target="_blank" rel="noopener">⬇ Download Free Pack</a>
+        <a class="btn btn-ghost" href="https://gitscore.cc" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>120K+</b><small>Downloads</small></div>
+        <div class="stat"><b>v4.2.1</b><small>Latest version</small></div>
+        <div class="stat"><b>Windows 10 / 11</b><small>Supported OS</small></div>
+        <div class="stat"><b>Free &amp; open source</b><small>License</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Features</span>
+        <h2>Everything in one finals-arena-pack</h2>
+        <p>Six tightly integrated modules built for The Finals — install once and toggle each tool from a single overlay.</p>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <div class="ico">🎯</div>
+          <h3>Aimbot</h3>
+          <p>Humanized target locking with adjustable FOV, smoothness, and bone priority — tuned for The Finals' fast TTK fights.</p>
+        </article>
+        <article class="card">
+          <div class="ico">👁️</div>
+          <h3>ESP Wallhack</h3>
+          <p>See enemies, teammates, and loot through walls with player boxes, health bars, distance readouts, and class labels.</p>
+        </article>
+        <article class="card">
+          <div class="ico">📡</div>
+          <h3>Radar</h3>
+          <p>A compact 2D radar overlay shows every hostile around you in real time — perfect for tracking flanks in Cashout modes.</p>
+        </article>
+        <article class="card">
+          <div class="ico">🔫</div>
+          <h3>No-Recoil Script</h3>
+          <p>Per-weapon recoil compensation that stabilizes your spray on the AKM, FCAR, Lewis Gun, and every other Finals primary.</p>
+        </article>
+        <article class="card">
+          <div class="ico">🛡️</div>
+          <h3>HWID Spoofer</h3>
+          <p>Clean, reversible hardware ID spoofer that protects your ranked account and keeps your climb going after a ban wave.</p>
+        </article>
+        <article class="card">
+          <div class="ico">⚡</div>
+          <h3>One-Click Loader</h3>
+          <p>Lightweight Windows loader with auto-update, config presets, and a clean overlay — no dependencies, no bloat.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">How it works</span>
+        <h2>Up and running in under a minute</h2>
+        <p>Three steps from download to your first ranked match with the full pack enabled.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div class="body">
+            <h3>Download the pack</h3>
+            <p>Grab the latest finals-arena-pack build from the download page. It ships as a single Windows archive — no installers, no bundled junk.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div class="body">
+            <h3>Run the loader</h3>
+            <p>Extract the archive and launch the loader as administrator. It detects your The Finals installation and auto-selects the correct game build.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div class="body">
+            <h3>Enable your modules</h3>
+            <p>Toggle aimbot, ESP, radar, no-recoil, and the HWID spoofer from the overlay. Save a preset, hit Play, and drop into your ranked climb.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">FAQ</span>
+        <h2>Questions about the Free Pack</h2>
+        <p>The most common things players ask before downloading finals-arena-pack.</p>
+      </div>
+
+      <div class="faq">
+        <details>
+          <summary>Is finals-arena-pack really free? <span class="plus"></span></summary>
+          <p>Yes. The entire pack — aimbot, ESP wallhack, radar, no-recoil script, and HWID spoofer — is free and open source. There are no paywalls, no premium tiers, and no hidden subscriptions. You can grab the latest build from the download page at any time.</p>
+        </details>
+        <details>
+          <summary>Which Windows versions are supported? <span class="plus"></span></summary>
+          <p>The pack is built and tested for Windows 10 and Windows 11 (64-bit). The loader runs as a standard desktop application, requires administrator rights for the overlay, and has no external runtime dependencies.</p>
+        </details>
+        <details>
+          <summary>Will the HWID spoofer protect my ranked account? <span class="plus"></span></summary>
+          <p>The included spoofer is designed to mask your hardware identifiers before launching The Finals, which helps protect your main account during ranked climbs. It is fully reversible — a restore option resets every value back to its original state.</p>
+        </details>
+        <details>
+          <summary>How often is the pack updated? <span class="plus"></span></summary>
+          <p>finals-arena-pack is updated shortly after each The Finals game patch so the ESP offsets, radar, and no-recoil tables stay accurate. The loader checks for new builds on startup, and the version chip above always reflects the latest release.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section>
+    <div class="wrap">
+      <div class="cta-banner">
+        <h2>Ready to climb with the full pack?</h2>
+        <p>Download finals-arena-pack and unlock aimbot, ESP, radar, no-recoil, and the HWID spoofer in one free build for Windows 10 / 11.</p>
+        <a class="btn btn-primary" href="https://gitscore.cc" target="_blank" rel="noopener">⬇ Download The Finals Free Pack</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2025 finals-arena-pack. The Finals Free Pack — free &amp; open source for Windows.</span>
+    <span class="links">
+      <a href="https://gitscore.cc" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://gitscore.cc" target="_blank" rel="noopener">Download</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
